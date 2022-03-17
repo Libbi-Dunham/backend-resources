@@ -11,4 +11,17 @@ describe('backend-resources routes', () => {
   afterAll(() => {
     pool.end();
   });
+
+  it('should create a cat', async () => {
+    const res = await request(app)
+      .post('/api/v1/cats')
+      .send({ name: 'tiger', favorite_treat: 'fish', favorite_toy: 'lazer' });
+
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      name: 'tiger',
+      favorite_treat: 'fish',
+      favorite_toy: 'lazer',
+    });
+  });
 });
