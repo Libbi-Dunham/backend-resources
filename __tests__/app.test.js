@@ -43,4 +43,19 @@ describe('backend-resources routes', () => {
       },
     ]);
   });
+
+  it('should update a dog', async () => {
+    const dog = await Dog.insert({ name: 'miklo', quantity: 1 });
+    const res = await request(app)
+      .patch(`/api/v1/dogs/${dog.id}`)
+      .send({ name: 'luna', quantity: 2 });
+
+    const expected = {
+      id: expect.any(String),
+      name: 'luna',
+      quantity: 2,
+    };
+    expect(res.body).toEqual(expected);
+    expect(await Dog.getById(dog.id)).toEqual(expected);
+  });
 });
