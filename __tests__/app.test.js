@@ -2,7 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-// const Dog = require('../lib/models/Dogs');
+const Dog = require('../lib/models/Dogs');
 
 describe('backend-resources routes', () => {
   beforeEach(() => {
@@ -23,5 +23,11 @@ describe('backend-resources routes', () => {
       name: 'miklo',
       quantity: 1,
     });
+  });
+
+  it('should list a dog by id', async () => {
+    const dog = await Dog.insert({ name: 'miklo', quantity: 1 });
+    const res = await request(app).get(`/api/v1/dogs/${dog.id}`);
+    expect(res.body).toEqual(dog);
   });
 });
