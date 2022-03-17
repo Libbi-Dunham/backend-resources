@@ -35,4 +35,22 @@ describe('backend-resources routes', () => {
     const res = await request(app).get(`/api/v1/cats/${cat.id}`);
     expect(res.body).toEqual(cat);
   });
+
+  it('should be able to list cats', async () => {
+    await Cat.insert({
+      name: 'tiger',
+      favorite_treat: 'fish',
+      favorite_toy: 'lazer',
+    });
+    const res = await request(app).get('/api/v1/cats');
+
+    expect(res.body).toEqual([
+      {
+        id: expect.any(String),
+        name: 'tiger',
+        favorite_treat: 'fish',
+        favorite_toy: 'lazer',
+      },
+    ]);
+  });
 });
