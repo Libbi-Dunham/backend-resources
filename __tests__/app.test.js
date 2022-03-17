@@ -58,4 +58,11 @@ describe('backend-resources routes', () => {
     expect(res.body).toEqual(expected);
     expect(await Dog.getById(dog.id)).toEqual(expected);
   });
+
+  it('should be able to delete a dog', async () => {
+    const dog = await Dog.insert({ name: 'miklo', quantity: 2 });
+    const res = await request(app).delete(`/api/v1/dogs/${dog.id}`);
+    expect(res.body).toEqual(dog);
+    expect(await Dog.getById(dog.id)).toBeNull();
+  });
 });
