@@ -30,4 +30,17 @@ describe('backend-resources routes', () => {
     const res = await request(app).get(`/api/v1/dogs/${dog.id}`);
     expect(res.body).toEqual(dog);
   });
+
+  it('should be able to list dogs', async () => {
+    await Dog.insert({ name: 'miklo', quantity: 1 });
+    const res = await request(app).get('/api/v1/dogs');
+
+    expect(res.body).toEqual([
+      {
+        id: expect.any(String),
+        name: 'miklo',
+        quantity: 1,
+      },
+    ]);
+  });
 });
