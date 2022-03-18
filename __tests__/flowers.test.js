@@ -58,4 +58,11 @@ describe('backend-resources routes', () => {
     expect(res.body).toEqual(expected);
     expect(await Flower.getById(flower.id)).toEqual(expected);
   });
+
+  it('should be able to delete a flower', async () => {
+    const flower = await Flower.insert({ name: 'rose', color: 'pink' });
+    const res = await request(app).delete(`/api/v1/flowers/${flower.id}`);
+    expect(res.body).toEqual(flower);
+    expect(await Flower.getById(flower.id)).toBeNull();
+  });
 });
