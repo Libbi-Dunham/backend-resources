@@ -25,13 +25,13 @@ describe('backend-resources routes', () => {
     });
   });
 
-  it('should list a toy by id', async () => {
+  it('should list a soda by id', async () => {
     const soda = await Soda.insert({ name: 'apple fanta', brand: 'fanta' });
     const res = await request(app).get(`/api/v1/sodas/${soda.id}`);
     expect(res.body).toEqual(soda);
   });
 
-  it('should be able to list', async () => {
+  it('should be able to list sodas', async () => {
     await Soda.insert({ name: 'apple fanta', brand: 'fanta' });
     const res = await request(app).get('/api/v1/sodas');
 
@@ -42,5 +42,20 @@ describe('backend-resources routes', () => {
         brand: 'fanta',
       },
     ]);
+  });
+
+  it('should update a soda', async () => {
+    const soda = await Soda.insert({ name: 'apple fanta', brand: 'fanta' });
+    const res = await request(app)
+      .patch(`/api/v1/sodas/${soda.id}`)
+      .send({ name: 'cherry', brand: '7up' });
+
+    const expected = {
+      id: expect.any(String),
+      name: 'cherry',
+      brand: '7up',
+    };
+    expect(res.body).toEqual(expected);
+    expect(await Soda.getById(soda.id)).toEqual(expected);
   });
 });
