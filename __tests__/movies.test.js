@@ -69,4 +69,14 @@ describe('backend-resources routes', () => {
     expect(res.body).toEqual(expected);
     expect(await Movie.getById(movie.id)).toEqual(expected);
   });
+
+  it('should be able to delete a movie', async () => {
+    const movie = await Movie.insert({
+      title: 'pulp fiction',
+      director: 'quentin tarantino',
+    });
+    const res = await request(app).delete(`/api/v1/movies/${movie.id}`);
+    expect(res.body).toEqual(movie);
+    expect(await Movie.getById(movie.id)).toBeNull();
+  });
 });
