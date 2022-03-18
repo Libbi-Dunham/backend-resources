@@ -2,6 +2,8 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const { AstPath } = require('prettier');
+const Movie = require('../lib/models/Movies');
 // const Movie = require('../lib/models/Movies');
 
 describe('backend-resources routes', () => {
@@ -23,5 +25,14 @@ describe('backend-resources routes', () => {
       title: 'pulp fiction',
       director: 'quentin tarantino',
     });
+  });
+
+  it('should list a movie by id', async () => {
+    const movie = await Movie.insert({
+      title: 'pulp fiction',
+      director: 'quentin tarantino',
+    });
+    const res = await request(app).get(`/api/v1/movies/${movie.id}`);
+    expect(res.body).toEqual(movie);
   });
 });
