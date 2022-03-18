@@ -53,4 +53,24 @@ describe('backend-resources routes', () => {
       },
     ]);
   });
+
+  it('should be able to update a cat', async () => {
+    const cat = await Cat.insert({
+      name: 'tiger',
+      favorite_treat: 'fish',
+      favorite_toy: 'lazer ',
+    });
+    const res = await request(app)
+      .patch(`/api/v1/cats/${cat.id}`)
+      .send({ name: 'mia', favorite_treat: 'chicken', favorite_toy: 'ball' });
+
+    const expected = {
+      id: expect.any(String),
+      name: 'mia',
+      favorite_treat: 'chicken',
+      favorite_toy: 'ball',
+    };
+    expect(res.body).toEqual(expected);
+    expect(await Cat.getById(cat.id)).toEqual(expected);
+  });
 });
