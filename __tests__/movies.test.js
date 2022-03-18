@@ -35,4 +35,20 @@ describe('backend-resources routes', () => {
     const res = await request(app).get(`/api/v1/movies/${movie.id}`);
     expect(res.body).toEqual(movie);
   });
+
+  it('should be able to list movies', async () => {
+    await Movie.insert({
+      title: 'pulp fiction',
+      director: 'quentin tarantino',
+    });
+    const res = await request(app).get('/api/v1/movies');
+
+    expect(res.body).toEqual([
+      {
+        id: expect.any(String),
+        title: 'pulp fiction',
+        director: 'quentin tarantino',
+      },
+    ]);
+  });
 });
