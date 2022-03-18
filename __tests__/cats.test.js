@@ -73,4 +73,15 @@ describe('backend-resources routes', () => {
     expect(res.body).toEqual(expected);
     expect(await Cat.getById(cat.id)).toEqual(expected);
   });
+
+  it('should be able to delete a cat', async () => {
+    const cat = await Cat.insert({
+      name: 'tiger',
+      favorite_treat: 'fish',
+      favorite_toy: 'lazer',
+    });
+    const res = await request(app).delete(`/api/v1/cats/${cat.id}`);
+    expect(res.body).toEqual(cat);
+    expect(await Cat.getById(cat.id)).toBeNull();
+  });
 });
