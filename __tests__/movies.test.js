@@ -51,4 +51,22 @@ describe('backend-resources routes', () => {
       },
     ]);
   });
+
+  it('should update a movie', async () => {
+    const movie = await Movie.insert({
+      title: 'pulp fiction',
+      director: 'quentin tarantino',
+    });
+    const res = await request(app)
+      .patch(`/api/v1/movies/${movie.id}`)
+      .send({ title: 'legally blonde', director: 'robert luketic' });
+
+    const expected = {
+      id: expect.any(String),
+      title: 'legally blonde',
+      director: 'robert luketic',
+    };
+    expect(res.body).toEqual(expected);
+    expect(await Movie.getById(movie.id)).toEqual(expected);
+  });
 });
