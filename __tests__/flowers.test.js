@@ -30,4 +30,17 @@ describe('backend-resources routes', () => {
     const res = await request(app).get(`/api/v1/flowers/${flower.id}`);
     expect(res.body).toEqual(flower);
   });
+
+  it('should be able to list flowers', async () => {
+    await Flower.insert({ name: 'rose', color: 'pink' });
+    const res = await request(app).get('/api/v1/flowers');
+
+    expect(res.body).toEqual([
+      {
+        id: expect.any(String),
+        name: 'rose',
+        color: 'pink',
+      },
+    ]);
+  });
 });
