@@ -30,4 +30,17 @@ describe('backend-resources routes', () => {
     const res = await request(app).get(`/api/v1/sodas/${soda.id}`);
     expect(res.body).toEqual(soda);
   });
+
+  it('should be able to list', async () => {
+    await Soda.insert({ name: 'apple fanta', brand: 'fanta' });
+    const res = await request(app).get('/api/v1/sodas');
+
+    expect(res.body).toEqual([
+      {
+        id: expect.any(String),
+        name: 'apple fanta',
+        brand: 'fanta',
+      },
+    ]);
+  });
 });
