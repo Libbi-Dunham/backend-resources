@@ -11,4 +11,16 @@ describe('backend-resources routes', () => {
   afterAll(() => {
     pool.end();
   });
+
+  it('should create a soda', async () => {
+    const res = await request(app)
+      .post('/api/v1/sodas')
+      .send({ name: 'apple fanta', brand: 'fanta' });
+
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      name: 'apple fanta',
+      brand: 'fanta',
+    });
+  });
 });
