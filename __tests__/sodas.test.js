@@ -58,4 +58,11 @@ describe('backend-resources routes', () => {
     expect(res.body).toEqual(expected);
     expect(await Soda.getById(soda.id)).toEqual(expected);
   });
+
+  it('should be able to delete a soda', async () => {
+    const soda = await Soda.insert({ name: 'apple fanta', brand: 'fanta' });
+    const res = await request(app).delete(`/api/v1/sodas/${soda.id}`);
+    expect(res.body).toEqual(soda);
+    expect(await Soda.getById(soda.id)).toBeNull();
+  });
 });
