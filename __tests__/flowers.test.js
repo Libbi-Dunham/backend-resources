@@ -43,4 +43,19 @@ describe('backend-resources routes', () => {
       },
     ]);
   });
+
+  it('should update a flower', async () => {
+    const flower = await Flower.insert({ name: 'rose', color: 'pink' });
+    const res = await request(app)
+      .patch(`/api/v1/flowers/${flower.id}`)
+      .send({ name: 'lilly', color: 'white' });
+
+    const expected = {
+      id: expect.any(String),
+      name: 'lilly',
+      color: 'white',
+    };
+    expect(res.body).toEqual(expected);
+    expect(await Flower.getById(flower.id)).toEqual(expected);
+  });
 });
